@@ -1,0 +1,17 @@
+---
+# Task installs init script
+
+- name: "HOSTINFO_SERVER | Install init script..."
+  become_user: root
+  become: yes
+  file:
+    src=/opt/hostinfo/Hostinfo/contrib/hostinfo_init.conf
+    dest=/etc/init/hostinfo.conf
+    state=link
+
+- name: "HOSTINFO_SERVER | Reload configuration"
+  become_user: root
+  become: yes
+  command: initctl reload-configuration
+
+# EOF

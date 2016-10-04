@@ -1,0 +1,25 @@
+---
+# Check out the hostinfo code
+
+- name: "HOSTINFO_SERVER | Confirm local hostinfo path is a git repo"
+  shell: /usr/bin/test -d {{ HOSTINFO_INSTALL_DIR }}/Hostinfo/.git
+  register: hostinfo_git_exists
+  ignore_errors: True
+
+
+- name: "HOSTINFO_SERVER | Clone Hostinfo Repo"
+  become_user: hostinfo
+  git:
+    repo: "https://github.com/dwagon/Hostinfo.git"
+    dest: "{{ HOSTINFO_INSTALL_DIR }}/Hostinfo"
+  when: hostinfo_git_exists.rc != 0
+
+
+- name: "HOSTINFO_SERVER | Update Hostinfo Repo"
+  become_user: hostinfo
+  git:
+    update: yes
+    force: yes
+    repo: "https://github.com/dwagon/Hostinfo.git"
+    dest: "{{ HOSTINFO_INSTALL_DIR }}/Hostinfo"
+  when: hostinfo_git_exists.rc == 0

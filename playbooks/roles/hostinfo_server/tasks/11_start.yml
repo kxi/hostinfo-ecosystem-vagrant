@@ -1,0 +1,9 @@
+---
+# Task starts hostinfo
+
+- name: "HOSTINFO_SERVER | Start it up"
+  become_user: root
+  become: yes
+  command: restart hostinfo
+
+# EOF

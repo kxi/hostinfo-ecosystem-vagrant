@@ -1,0 +1,12 @@
+---
+- include: sys_package.yml
+- include: user.yml
+- include: clone.yml
+- include: webserver.yml
+- include: database.yml
+#- include: python.yml
+#- include: gunicorn.yml
+#- include: crontab.yml
+#- include: monitoring.yml
+#- include: initscript.yml
+#- include: configure.yml

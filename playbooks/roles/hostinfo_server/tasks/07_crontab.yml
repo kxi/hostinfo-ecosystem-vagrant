@@ -1,0 +1,23 @@
+---
+# Task creates crontabs.
+
+- name: "HOSTINFO_SERVER | Create crontab..."
+  become_user: root
+  become: yes
+  cron:
+      name={{ item.name }}
+      weekday={{ item.weekday }}
+      hour={{ item.hour }}
+      minute={{ 59 | random }}
+      job={{ item.job }}
+  with_items:
+      - name: "pingcheck"
+        weekday: "*"
+        hour: "*"
+        job: "/usr/local/bin/pingCheck"
+      - name: "backup"
+        weekday: "0"
+        hour: "3"
+        job: "/usr/local/bin/hostinfo_backup 5"
+
+# EOF

@@ -1,0 +1,7 @@
+---
+- name: "HOSTINFO_SERVER | Hostinfo User Creation"
+  become: true
+  user:
+    name: "hostinfo"
+    home: "{{ HOSTINFO_INSTALL_DIR }}"
+    shell: "/bin/bash"

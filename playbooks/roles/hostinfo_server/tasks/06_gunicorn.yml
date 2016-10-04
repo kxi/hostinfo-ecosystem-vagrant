@@ -1,0 +1,11 @@
+---
+# Task installs gunicorn
+
+- name: "HOSTINFO_SERVER | Install gunicorn..."
+  become_user: hostinfo
+  become: yes
+  pip:
+    name=gunicorn
+    virtualenv=/opt/hostinfo
+
+# EOF

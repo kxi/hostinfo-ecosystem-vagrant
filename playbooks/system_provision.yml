@@ -1,0 +1,18 @@
+- name: Deploy Hostinfo Server
+  hosts: hostinfo-server
+  gather_facts: true
+  become: true
+  roles:
+    - hostinfo_server
+
+
+#- name: Deploy Host
+#  hosts: host01
+#  gather_facts: true
+#  become: true
+#  roles:
+#    - sys_package
+#    - user_go_agent
+#    - install_go_agent
+#    - git
+#    - maven

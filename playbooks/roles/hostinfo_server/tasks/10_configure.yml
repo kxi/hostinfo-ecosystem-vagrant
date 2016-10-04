@@ -1,0 +1,17 @@
+---
+# Task configures hostinfo
+
+- name: "HOSTINFO_SERVER | Collect statics"
+  become_user: hostinfo
+  become: yes
+  command: /opt/hostinfo/bin/python /opt/hostinfo/Hostinfo/hostinfo/manage.py collectstatic -c --noinput
+
+- name: "HOSTINFO_SERVER | Setup hostinfo password"
+  become_user: hostinfo
+  become: yes
+  replace:
+    dest=/opt/hostinfo/Hostinfo/hostinfo/hostinfo/settings.py
+    regexp='.*PASSWORD.*'
+    replace='"PASSWORD":"hostinfo",'
+
+# EOF

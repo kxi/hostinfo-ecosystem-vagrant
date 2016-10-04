@@ -1,0 +1,65 @@
+---
+# Task installs postgresql
+
+- name: "HOSTINFO_SERVER | Install postgresql..."
+  become_user: root
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - postgresql
+    - postgresql-server
+    - postgresql-devel
+    - python-psycopg2
+
+
+- name: "HOSTINFO_SERVER | Initialising postgresql"
+  command: service postgresql initdb
+    creates: /var/lib/pgsql/data/postgresql.conf
+
+
+- name: "HOSTINFO_SERVER | Starting postgresql"
+  become_user: root
+  become: yes
+  service:
+    name=postgresql
+    enabled=yes
+    state=started
+
+
+- name: "HOSTINFO_SERVER | Ensure PostgreSQL is listening on all localhost"
+  become_user: root
+  become: yes
+  lineinfile: dest=/var/lib/pgsql/data/postgresql.conf
+    regexp='^#?listen_addresses\s*='
+    line="listen_addresses = '*'"
+    state=present
+  notify: restart postgresql
+
+
+- name: "HOSTINFO_SERVER | ensure we can auth locally"
+  become_user: root
+  become: yes
+  lineinfile:
+    dest=/var/lib/pgsql/data/pg_hba.conf
+    regexp='host\s+all\s+all\s+0.0.0.0/0\s+md5'
+    line='host all all 0.0.0.0/0 md5'
+    insertbefore=BOF
+  notify: restart postgresql
+
+
+- name: "HOSTINFO_SERVER | Create db"
+  become_user: postgres
+  become: yes
+  postgresql_db:
+    name=hostinfo
+
+
+- name: "HOSTINFO_SERVER | Create db user"
+  become_user: postgres
+  become: yes
+  postgresql_user:
+    name=hostinfo
+    db=hostinfo
+    password=hostinfo

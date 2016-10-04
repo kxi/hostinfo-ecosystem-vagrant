@@ -1,0 +1,26 @@
+---
+# Task installs nginx
+
+- name: "HOSTINFO_SERVER | Install nginx..."
+  yum:
+    name: nginx
+    state: latest
+
+
+- name: "HOSTINFO_SERVER | Set up Basoc Nginx Config"
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+
+
+- name: "HOSTINFO_SERVER | Link hostinfo nginx config"
+  file:
+    src: "{{ HOSTINFO_INSTALL_DIR }}/Hostinfo/contrib/hostinfo_nginx.conf"
+    dest: "/etc/nginx/conf.d/hostinfo.conf"
+    state: link
+
+
+- name: "HOSTINFO_SERVER | Restarting nginx"
+  service:
+    name: nginx
+    state: restarted
