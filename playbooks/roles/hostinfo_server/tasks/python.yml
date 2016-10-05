@@ -1,0 +1,35 @@
+---
+# Task installs python
+
+- name: "HOSTINFO_SERVER | Install python..."
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - python-devel
+    - python-virtualenv
+    - libyaml-devel
+
+
+- name: "HOSTINFO_SERVER | Create virtualenv..."
+  become_user: hostinfo
+  command: virtualenv /opt/hostinfo
+#  args:
+#    creates: /opt/hostinfo/bin
+
+
+- name: "HOSTINFO_SERVER | Install requirements"
+  become_user: hostinfo
+  pip:
+    requirements: "/opt/hostinfo/Hostinfo/requirements.txt"
+    virtualenv: "/opt/hostinfo"
+
+
+- name: "HOSTINFO_SERVER | Install requirements"
+  become_user: hostinfo
+  pip:
+    name: django-debug_toolbar
+    virtualenv: "/opt/hostinfo"
+
+
+# EOF

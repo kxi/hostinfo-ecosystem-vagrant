@@ -1,6 +1,0 @@
-- name: SB-SENSU-SERVER | Cron restart uchiwa
-  become: true
-  cron:
-    job: /etc/init.d/uchiwa restart
-    hour: 23
-    minute: 54
